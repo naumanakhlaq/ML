@@ -28,10 +28,10 @@ train, test, train_labels, test_labels = train_test_split(features, labels,
                                                           test_size=0.30,
                                                           random_state=4)
 
-gnb = LinearDiscriminantAnalysis()
+gnb = LogisticRegression()
 
 model = gnb.fit(train, train_labels)  #
 preds = gnb.predict(test)             #.
 print(preds)
 
-scores = cross_val_score(gnb, train, train_labels, scoring='accuracy', cv = 5)
+scores = cross_val_score(gnb, test, test_labels, scoring='accuracy', cv = 5)
