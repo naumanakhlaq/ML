@@ -15,20 +15,30 @@ from sklearn.naive_bayes import GaussianNB
 path = os.getcwd() + '\\US Census 2015.csv'  
 dataset = pd.read_csv(path)
 
-features = dataset.values[:, 3:37]
-labels = dataset.values[:, 16]
+#features = dataset[['White', 'Black','Poverty','Professional', 'Employed', 'Unemployment']]
+#labels = dataset.values[:, 16]
+
+pd.options.display.max_columns = 100
+
+df = pd.read_csv('US Census 2015.csv')
+df.head()
+
+X = df[['Hispanic', 'White', 'Black', 'Poverty', 'Professional']]
+
+y = df.IncomePerCap
+
+plt.scatter(X.values[:, 0], y)
 
 
-train, test, train_labels, test_labels = train_test_split(features, labels, 
+train, test, train_labels, test_labels = train_test_split(X, y, 
                                                           test_size=0.30,
                                                           random_state=4)
 
 mod = LinearRegression()
 mod.fit(train, train_labels)
 
-'''
-preds = mod.predict(test)             
-print(preds)
+scores = cross_val_score(mod, test, test_labels, scoring='r2', cv = 5)
 
-dataset.corr()
-'''
+preds = mod.predict(test)             
+print(scores)
+
